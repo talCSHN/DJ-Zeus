@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:DJZeus_Client.ViewModels"
+             x:Class="DJZeus_Client.Views.MainView"
+             x:DataType="viewmodel:MainViewModel"
+             Title="DJ Zeus">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="15"
+            VerticalOptions="Center">
+            <Border Stroke="LightGray"
+                    StrokeThickness="1"
+                    Padding="15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                    <Image
+                        Source="{Binding WeatherIconUrl}"
+                        HeightRequest="60"
+                        WidthRequest="60"
+                        Aspect="AspectFit"/>
+                    <VerticalStackLayout Spacing="5">
+                        <Label 
+                            Text="{Binding Location}"
+                            FontSize="24"
+                            FontAttributes="Bold" />
+                        <Label 
+                            Text="{Binding Temperature}"
+                            FontSize="18"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Label 
+                Text="{Binding WeatherDescription}"
+                HorizontalOptions="Center"
+                Style="{StaticResource SubHeadline}"/>
+
+            <Border StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <Image
+                    Source="{Binding PlaylistThumbnailUrl}"
+                    Aspect="AspectFill"
+                    HeightRequest="200"/>
+            </Border>
+
+            <Label 
+                Text="{Binding PlaylistTitle}"
+                HorizontalOptions="Center"
+                FontSize="18"
+                FontAttributes="Bold"
+                Margin="0,5,0,0"/>
+
+            <Button
+                Text="음악 재생" 
+                Command="{Binding PlayMusicCommand}"
+                HorizontalOptions="Fill" 
+                HeightRequest="50"
+                CornerRadius="25"/>
+
+            <Button
+                Text="새로고침" 
+                Command="{Binding LoadDataCommand}"
+                HorizontalOptions="Center"
+                WidthRequest="120"
+                Style="{StaticResource TextButton}" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
