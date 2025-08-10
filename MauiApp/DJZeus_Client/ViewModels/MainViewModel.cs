@@ -87,9 +87,9 @@ namespace DJZeus_Client.ViewModels
                 Temperature = $"{weatherData.Main.Temp:F0}°C";
                 WeatherDescription = weatherData.Weather.FirstOrDefault()?.Description;
                 WeatherIconUrl = $"https://openweathermap.org/img/wn/{weatherData.Weather.FirstOrDefault()?.Icon}@2x.png";
-                string weatherCondition = weatherData.Weather.FirstOrDefault()?.Condition ?? "Clear";
+                string weatherCondition = weatherData.Weather.FirstOrDefault()?.Condition;
                 string searchQuery = GetMusicSearchQuery(weatherCondition);
-                string encodedSearchQuery = HttpUtility.UrlEncode(searchQuery); // 검색어를 URL 인코딩
+                string encodedSearchQuery = HttpUtility.UrlEncode(searchQuery);
 
                 string youtubeUrl = $"https://www.googleapis.com/youtube/v3/search?part=snippet&q={encodedSearchQuery}&type=video&videoCategoryId=10&maxResults=1&key={youtubeApiKey}";
                 var youtubeResponse = await client.GetAsync(youtubeUrl);
