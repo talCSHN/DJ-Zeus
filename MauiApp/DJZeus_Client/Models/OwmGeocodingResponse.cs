@@ -13,7 +13,6 @@ namespace DJZeus_Client.Models
         public string Name { get; set; }
         [JsonPropertyName("Country")]
         public string Country { get; set; }
-        [JsonPropertyName("timezone")]
-        public string Timezone { get; set; }
+        
     }
 }

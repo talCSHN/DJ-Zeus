@@ -19,13 +19,13 @@ namespace DJZeus_Client.ViewModels
             LoadData();
         }
         [ObservableProperty]
-        string location = "로딩 중...";
+        string location = "로딩 중";
 
         [ObservableProperty]
         string temperature = "??℃";
 
         [ObservableProperty]
-        string weatherDescription = "날씨를 불러오고 있어요.";
+        string weatherDescription = "test";
 
         [ObservableProperty]
         string weatherIconUrl = "dotnet_bot.png";
@@ -34,9 +34,10 @@ namespace DJZeus_Client.ViewModels
         string playlistThumbnailUrl = "dotnet_bot.png";
 
         [ObservableProperty]
-        string playlistTitle = "날씨에 맞는 플레이리스트를 찾고 있어요.";
+        string playlistTitle = "test";
 
-        private readonly string apiKey = "d25717f19e97e8c7e284790fb9e28328";
+        private readonly string openweatherApiKey = "d25717f19e97e8c7e284790fb9e28328";
+        private readonly string youtubeApiKey = "AIzaSyDTk-iV9rGpVBCkpPQTjX9NxXrhEOpqgkU";
 
         [RelayCommand]
         async Task LoadData()
@@ -81,8 +82,9 @@ namespace DJZeus_Client.ViewModels
                 }
 
                 var weatherData = await weatherResponse.Content.ReadFromJsonAsync<WeatherData>();
+                //Debug.WriteLine(weatherData.Weather);
                 Temperature = $"{weatherData.Main.Temp:F0}°C";
-                WeatherDescription = weatherData.Weather.FirstOrDefault()?.Description ?? "정보 없음";
+                WeatherDescription = weatherData.Weather.FirstOrDefault()?.Description;
                 WeatherIconUrl = $"https://openweathermap.org/img/wn/{weatherData.Weather.FirstOrDefault()?.Icon}@2x.png";
 
             }
@@ -92,14 +94,12 @@ namespace DJZeus_Client.ViewModels
                 Console.WriteLine($"Error: {ex.Message}");
             }
             
-            
-            
         }
 
         [RelayCommand]
         async Task PlayMusic()
         {
-            // TODO: 여기에 유튜브 링크를 여는 로직 구현
+            
         }
 
     }
