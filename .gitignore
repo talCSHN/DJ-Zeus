@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Downloaded installation files
+*.zip
+*.tar.gz
+
 # User-specific files
 *.rsuser
 *.suo
