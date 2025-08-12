@@ -9,5 +9,6 @@
         public string MusicTitle { get; set; }
         public string MusicThumbnailUrl { get; set; }
         public string MusicVideoId { get; set; }
+        public string MusicStreamUrl { get; set; }
     }
 }

@@ -3,7 +3,10 @@ using DJZeus_Backend.Models;
 using DJZeus_Client.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Web;
+using YoutubeExplode;
+using YoutubeExplode.Videos.Streams;
 
 namespace DJZeus_Backend.Controllers
 {
@@ -44,17 +47,45 @@ namespace DJZeus_Backend.Controllers
 
                 var weatherData = await weatherResponse.Content.ReadFromJsonAsync<WeatherData>();
 
-                // YouTube 음악 검색
                 string weatherCondition = weatherData.Weather.FirstOrDefault()?.Condition;
                 string searchQuery = GetMusicSearchQuery(weatherCondition);
                 string encodedSearchQuery = HttpUtility.UrlEncode(searchQuery);
 
+                // YouTube 음악 검색
                 string youtubeUrl = $"https://www.googleapis.com/youtube/v3/search?part=snippet&q={encodedSearchQuery}&type=video&videoCategoryId=10&maxResults=1&key={youTubeApiKey}";
                 var youtubeResponse = await client.GetAsync(youtubeUrl);
                 if (!youtubeResponse.IsSuccessStatusCode) return BadRequest("음악 검색 실패");
 
                 var youtubeResult = await youtubeResponse.Content.ReadFromJsonAsync<YouTubeMusic>();
+                string musicStreamUrl = string.Empty;
+                IStreamInfo streamInfo = null;
                 var firstVideo = youtubeResult?.Items?.FirstOrDefault();
+                try
+                {
+                    var youtubeClient = new YoutubeClient();
+                    var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(firstVideo.Id.VideoId);
+                    streamInfo = streamManifest.GetMuxedStreams().FirstOrDefault(s => s.VideoQuality.IsHighDefinition);
+                    //var streamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
+                    if (streamInfo == null)
+                    {
+                        streamInfo = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).FirstOrDefault();
+                    }
+                    //if (streamInfo == null)
+                    //{
+                    //    Debug.WriteLine($"Muxed stream not found for Video ID: {firstVideo.Id.VideoId}. Trying audio-only streams.");
+                    //    streamInfo = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).FirstOrDefault();
+                    //}
+                    musicStreamUrl = streamInfo?.Url;
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"YoutubeExplode Error: {ex.Message}");
+                }
+                if (string.IsNullOrEmpty(musicStreamUrl))
+                {
+                    return NotFound("영상 로드 불가");
+                }
 
                 // 추천 기록 저장
                 var log = new RecommendationLog
@@ -76,7 +107,8 @@ namespace DJZeus_Backend.Controllers
                     WeatherIconUrl = $"https://openweathermap.org/img/wn/{weatherData.Weather.FirstOrDefault()?.Icon}@2x.png",
                     MusicTitle = firstVideo?.Snippet.Title,
                     MusicThumbnailUrl = firstVideo?.Snippet.Thumbnails.Medium.Url,
-                    MusicVideoId = firstVideo?.Id.VideoId
+                    MusicVideoId = firstVideo?.Id.VideoId,
+                    MusicStreamUrl = musicStreamUrl
                 };
 
                 return Ok(response);
@@ -86,10 +118,7 @@ namespace DJZeus_Backend.Controllers
                 return StatusCode(500, $"서버 내부 오류: {ex.Message}");
             }
        }
-
-        // 이 메서드들은 MainViewModel에서 그대로 가져옴
-        //private string GetMusicSearchQuery(string weather) { /* ... 이전과 동일 ... */ }
-        //private string ToNaturalKorean(string description) { /* ... 이전과 동일 ... */ }
+        
         private string GetMusicSearchQuery(string weather)
         {
             int hour = DateTime.Now.Hour;

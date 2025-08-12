@@ -10,6 +10,8 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using YoutubeExplode;
+using YoutubeExplode.Videos.Streams;
 
 namespace DJZeus_Client.ViewModels
 {
@@ -26,16 +28,19 @@ namespace DJZeus_Client.ViewModels
         string temperature = "??℃";
 
         [ObservableProperty]
-        string weatherDescription = "test";
+        string weatherDescription = string.Empty;
 
         [ObservableProperty]
         string weatherIconUrl = "dotnet_bot.png";
 
-        [ObservableProperty]
-        string playlistThumbnailUrl = "dotnet_bot.png";
+        //[ObservableProperty]
+        //string playlistThumbnailUrl = "dotnet_bot.png";
 
         [ObservableProperty]
-        string playlistTitle = "test";
+        string videoStreamUrl;
+
+        [ObservableProperty]
+        string playlistTitle = string.Empty;
 
         private string _youTubeVideoId;
 
@@ -52,20 +57,22 @@ namespace DJZeus_Client.ViewModels
                 }
                 using var client = new HttpClient();
                 string serverUrl = DeviceInfo.Platform == DevicePlatform.Android
-                                   ? "http://10.0.2.2:5062" // Android 에뮬레이터
-                                   : "http://localhost:5062"; // Windows 또는 기타
+                                   ? "http://10.0.2.2:5062"
+                                   : "http://localhost:5062";
                 string requestUrl = $"{serverUrl}/api/Recommendation?lat={currentLocation.Latitude}&lon={currentLocation.Longitude}";
+                
                 var response = await client.GetFromJsonAsync<RecommendationDTO>(requestUrl);
                 if (response != null)
                 {
-                    // 4. 서버가 보내준 데이터로 UI 업데이트
+                    // 4. 서버 응답 데이터 받아서 UI 업데이트
                     Location = response.Location;
                     Temperature = response.Temperature;
                     WeatherDescription = response.WeatherDescription;
                     WeatherIconUrl = response.WeatherIconUrl;
                     PlaylistTitle = response.MusicTitle;
-                    PlaylistThumbnailUrl = response.MusicThumbnailUrl;
+                    //PlaylistThumbnailUrl = response.MusicThumbnailUrl;
                     _youTubeVideoId = response.MusicVideoId;
+                    VideoStreamUrl = response.MusicStreamUrl;
                 }
             }
             

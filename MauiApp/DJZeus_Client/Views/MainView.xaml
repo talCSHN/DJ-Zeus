@@ -4,35 +4,53 @@
              xmlns:viewmodel="clr-namespace:DJZeus_Client.ViewModels"
              x:Class="DJZeus_Client.Views.MainView"
              x:DataType="viewmodel:MainViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="DJ Zeus">
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="20"
-            Spacing="15"
-            VerticalOptions="Center">
+            Padding="15" 
+            Spacing="12"
+            VerticalOptions="Start">
+
             <Border Stroke="LightGray"
                     StrokeThickness="1"
-                    Padding="15">
+                    Padding="12">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
                 </Border.StrokeShape>
-                <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
-                    <Image
-                        Source="{Binding WeatherIconUrl}"
-                        HeightRequest="60"
-                        WidthRequest="60"
-                        Aspect="AspectFit"/>
-                    <VerticalStackLayout Spacing="5">
+                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15" VerticalOptions="Center">
+                    <Image Grid.Column="0"
+                           Source="{Binding WeatherIconUrl}"
+                           HeightRequest="50"
+                           WidthRequest="50"
+                           Aspect="AspectFit"/>
+                    <VerticalStackLayout Grid.Column="1" Spacing="2">
                         <Label 
                             Text="{Binding Location}"
-                            FontSize="24"
+                            FontSize="22"
                             FontAttributes="Bold" />
                         <Label 
                             Text="{Binding Temperature}"
-                            FontSize="18"/>
+                            FontSize="16"/> 
                     </VerticalStackLayout>
-                </HorizontalStackLayout>
+                </Grid> 
+                <!--<HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                    <Image
+                        Source="{Binding WeatherIconUrl}"
+                        HeightRequest="50"
+                        WidthRequest="50"
+                        Aspect="AspectFit"/>
+                    <VerticalStackLayout Spacing="2">
+                        <Label 
+                            Text="{Binding Location}"
+                            FontSize="22"
+                            FontAttributes="Bold" />
+                        <Label 
+                            Text="{Binding Temperature}"
+                            FontSize="16"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>-->
             </Border>
 
             <Label 
@@ -44,32 +62,29 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
                 </Border.StrokeShape>
-                <Image
-                    Source="{Binding PlaylistThumbnailUrl}"
+                <toolkit:MediaElement
+                    x:Name="mediaElement"
+                    Source="{Binding VideoStreamUrl}"
+                    ShouldAutoPlay="True"
+                    ShouldShowPlaybackControls="True"
                     Aspect="AspectFill"
-                    HeightRequest="200"/>
+                    HeightRequest="180" />
             </Border>
 
             <Label 
                 Text="{Binding PlaylistTitle}"
                 HorizontalOptions="Center"
-                FontSize="18"
+                FontSize="16"
                 FontAttributes="Bold"
                 Margin="0,5,0,0"/>
-
-            <Button
-                Text="음악 재생" 
-                Command="{Binding PlayMusicCommand}"
-                HorizontalOptions="Fill" 
-                HeightRequest="50"
-                CornerRadius="25"/>
 
             <Button
                 Text="새로고침" 
                 Command="{Binding LoadDataCommand}"
                 HorizontalOptions="Center"
                 WidthRequest="120"
-                Style="{StaticResource TextButton}" />
+                Style="{StaticResource FilledButton}" />
+
         </VerticalStackLayout>
     </ScrollView>
 

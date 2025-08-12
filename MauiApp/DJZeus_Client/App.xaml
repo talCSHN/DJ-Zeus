@@ -9,6 +9,20 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="FilledButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#6A5ACD" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="Padding" Value="20,0" />
+                <Setter Property="Shadow">
+                    <Shadow Brush="Black"
+                Opacity="0.3"
+                Radius="10"
+                Offset="5,5" />
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
