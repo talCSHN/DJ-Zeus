@@ -59,7 +59,7 @@ namespace DJZeus_Client.ViewModels
                 //string serverUrl = DeviceInfo.Platform == DevicePlatform.Android
                 //                   ? "http://10.0.2.2:5062"
                 //                   : "http://localhost:5062";
-                string serverUrl = "https://800a26511769.ngrok-free.app";
+                string serverUrl = "https://ce7be1542946.ngrok-free.app";
                 string requestUrl = $"{serverUrl}/api/Recommendation?lat={currentLocation.Latitude}&lon={currentLocation.Longitude}";
                 
                 var response = await client.GetFromJsonAsync<RecommendationDTO>(requestUrl);
