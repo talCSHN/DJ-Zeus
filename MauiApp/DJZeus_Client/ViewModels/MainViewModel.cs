@@ -56,7 +56,7 @@ namespace DJZeus_Client.ViewModels
                     return;
                 }
                 using var client = new HttpClient();
-                string serverUrl = "http://djzeus.iptime.org:8080";
+                string serverUrl = "https://c7841f3959bd.ngrok-free.app";
                 string requestUrl = $"{serverUrl}/api/Recommendation?lat={currentLocation.Latitude}&lon={currentLocation.Longitude}";
                 
                 var response = await client.GetFromJsonAsync<RecommendationDTO>(requestUrl);
