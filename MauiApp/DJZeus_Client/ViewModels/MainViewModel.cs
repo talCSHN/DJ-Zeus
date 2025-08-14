@@ -49,7 +49,7 @@ namespace DJZeus_Client.ViewModels
         {
             try
             {
-                var currentLocation = await Geolocation.Default.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(1)));
+                var currentLocation = await Geolocation.Default.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10)));
                 if (currentLocation == null)
                 {
                     Location = "위치 정보 로드 불가";
@@ -59,7 +59,7 @@ namespace DJZeus_Client.ViewModels
                 //string serverUrl = DeviceInfo.Platform == DevicePlatform.Android
                 //                   ? "http://10.0.2.2:5062"
                 //                   : "http://localhost:5062";
-                string serverUrl = "https://ce7be1542946.ngrok-free.app";
+                string serverUrl = "http://djzeus.iptime.org:5062";
                 string requestUrl = $"{serverUrl}/api/Recommendation?lat={currentLocation.Latitude}&lon={currentLocation.Longitude}";
                 
                 var response = await client.GetFromJsonAsync<RecommendationDTO>(requestUrl);
