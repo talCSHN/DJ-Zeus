@@ -56,9 +56,6 @@ namespace DJZeus_Client.ViewModels
                     return;
                 }
                 using var client = new HttpClient();
-                //string serverUrl = DeviceInfo.Platform == DevicePlatform.Android
-                //                   ? "http://10.0.2.2:5062"
-                //                   : "http://localhost:5062";
                 string serverUrl = "http://djzeus.iptime.org:8080";
                 string requestUrl = $"{serverUrl}/api/Recommendation?lat={currentLocation.Latitude}&lon={currentLocation.Longitude}";
                 
